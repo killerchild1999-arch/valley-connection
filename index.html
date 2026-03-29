@@ -47,4 +47,85 @@
         </div>
         
         <div id="log-container"></div>
-        <p onclick="
+        <p onclick="location.reload()" style="color:#aaa; font-size:11px; margin-top:30px; cursor:pointer; text-align:center;">Logout / Refresh List</p>
+    </div>
+
+    <script>
+        // THE ENGINE
+        const GOOGLE_URL = 'https://script.google.com/macros/s/AKfycbwqc1TCDcaSJZJWY0V6E7rBaP9deVN1aEb_Wghl13b-Opmxf745FOrrjF3y8IrXEgW47g/exec';
+        const ACCESS_CODE = "VC2026";
+
+        function checkAuth() {
+            const pass = document.getElementById('pass-input').value;
+            const name = document.getElementById('name-input').value;
+            if (pass === ACCESS_CODE && name.length > 1) {
+                localStorage.setItem("vc_driver", name);
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('main-app').classList.remove('hidden');
+                document.getElementById('driver-header').innerText = "Driver: " + name;
+                loadCustomerNames();
+            } else {
+                alert("Incorrect Code or Name missing.");
+            }
+        }
+
+        async function loadCustomerNames() {
+            const select = document.getElementById('cust-select');
+            try {
+                const response = await fetch(GOOGLE_URL);
+                const names = await response.json();
+                select.innerHTML = '<option value="">-- Choose Resident --</option>';
+                names.forEach(name => {
+                    let opt = document.createElement('option');
+                    opt.value = name;
+                    opt.innerHTML = name;
+                    select.appendChild(opt);
+                });
+            } catch (err) {
+                select.innerHTML = '<option value="">Error loading list</option>';
+            }
+        }
+
+        async function handleSync(statusLabel) {
+            const select = document.getElementById('cust-select');
+            const driver = localStorage.getItem("vc_driver");
+            if (!select.value) { return alert("Select a customer!"); }
+
+            let finalStatus = statusLabel;
+            if (statusLabel === "NOT DELIVERED") {
+                const reason = prompt("Why could it not be delivered?");
+                if (!reason) return;
+                finalStatus = `NOT DELIVERED (${reason})`;
+            }
+
+            document.getElementById('confirm-btn').innerText = "SYNCING...";
+            const payload = {
+                action: (statusLabel === "Dropped Off") ? "driver_dropoff" : "driver_exception",
+                driverName: driver,
+                customerName: select.value,
+                status: finalStatus
+            };
+
+            try {
+                await fetch(GOOGLE_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+                addToLog(select.value, statusLabel);
+                alert("Sheet Updated!");
+            } catch (err) {
+                alert("Connection Error!");
+            } finally {
+                document.getElementById('confirm-btn').innerHTML = "CONFIRM<br>DROP-OFF";
+            }
+        }
+
+        function addToLog(name, status) {
+            const container = document.getElementById('log-container');
+            const time = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.style.borderLeftColor = (status === "Dropped Off") ? "#28B92D" : "#D94B28";
+            entry.innerHTML = `<strong>${name}</strong> <span>${time}</span>`;
+            container.prepend(entry);
+        }
+    </script>
+</body>
+</html>
