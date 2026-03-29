@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>VC | Privacy Policy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: -apple-system, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #f4f7f6; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h1 { color: #28B92D; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h2 { font-size: 18px; margin-top: 25px; color: #444; }
+        p { font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Privacy Policy</h1>
+    <p>Last Updated: March 2026</p>
+
+    <h2>1. Information We Collect</h2>
+    <p>We collect names, delivery addresses, and phone numbers provided voluntarily by residents for the purpose of coordinating local deliveries.</p>
+
+    <h2>2. How We Use Data</h2>
+    <p>Your data is used strictly for logistics and dispatching. We do not sell, rent, or share your personal information with third-party advertisers.</p>
+
+    <h2>3. Data Storage</h2>
+    <p>Information is stored securely within a private Google Spreadsheet and is only accessible by authorized Valley Connection personnel.</p>
+
+    <h2>4. Your Rights</h2>
+    <p>To have your information removed from our delivery route, please contact us directly and we will delete your record from our system immediately.</p>
+    
+    <p style="margin-top:40px; font-size:12px; color:#aaa; text-align:center;">&copy; 2026 Valley Connection</p>
+</div>
+
+</body>
+</html>
